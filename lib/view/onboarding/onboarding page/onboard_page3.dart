@@ -1,10 +1,9 @@
 import 'package:fixify/constant/app_image.dart';
 import 'package:fixify/constant/navigation.dart';
-import 'package:fixify/view/onboarding/boarding_location.dart';
+import 'package:fixify/view/onboarding/Location/boarding_location.dart';
 import 'package:fixify/view/onboarding/widgets/onboarding_data.dart';
 import 'package:fixify/view/onboarding/widgets/onboarding_page.dart';
 import 'package:flutter/material.dart';
-
 
 class OnboardingPageThree extends StatelessWidget {
   final double page;
@@ -20,17 +19,16 @@ class OnboardingPageThree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OnboardingPage(
-      page: page,
+    // البيانات كلها جوه OnboardingData
+    final onboardingData = OnboardingData(
       index: index,
-      data: OnboardingData(
-        image: AppImage.onboarding3,
-        title: "Stay Connected",
-        subtitle: "Chat or call your tasker to\nfine-tune every detail",
-        nextLabel: "Get Started",
-        backLabel: "Back",
-        backColor: Colors.black,
-      ),
+      page: page,
+      image: AppImage.onboarding3,
+      title: "Stay Connected",
+      subtitle: "Chat or call your tasker to\nfine-tune every detail",
+      nextLabel: "Get Started",
+      backLabel: "Back",
+      backColor: Colors.black,
       onNext: () {
         navigateAndRemoveUntil(
           context: context,
@@ -42,5 +40,7 @@ class OnboardingPageThree extends StatelessWidget {
         curve: Curves.easeOut,
       ),
     );
+
+    return OnboardingPage(data: onboardingData);
   }
 }

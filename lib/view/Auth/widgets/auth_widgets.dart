@@ -1,6 +1,7 @@
 import 'package:fixify/view/Auth/widgets/otp_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../constant/color_manager.dart';
 import '../../../constant/text_manager.dart';
 import 'data_auth.dart';
@@ -84,7 +85,7 @@ class _AuthWidgetsState extends State<AuthWidgets> {
 
             SizedBox(height: 16.h),
 
-       //subtitle
+            //subtitle
             Text(
               widget.data.subtitle,
               style: TextManager.heading2.copyWith(
@@ -166,14 +167,26 @@ class _AuthWidgetsState extends State<AuthWidgets> {
                   ),
                   SizedBox(height: 16.h),
                   if (!isOtpComplete)
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Didn’t receive any code? Resend code",
-                        style: TextManager.heading2.copyWith(
-                          color: ColorManager.textPrimary,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Didn’t receive any code?",
+                          style: TextManager.heading2.copyWith(
+                            color: ColorManager.textPrimary,
+                          ),
                         ),
-                      ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Resend code",
+                            style: TextManager.bodyText.copyWith(
+                              color: ColorManager.textPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                 ],
               )
@@ -208,8 +221,9 @@ class _AuthWidgetsState extends State<AuthWidgets> {
                     if (value == null || value.isEmpty) {
                       return 'Email is required';
                     }
-                    final emailRegex =
-                    RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                    final emailRegex = RegExp(
+                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    );
                     if (!emailRegex.hasMatch(value)) {
                       return 'Enter a valid email';
                     }

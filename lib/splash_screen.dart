@@ -1,8 +1,10 @@
 import 'dart:async';
-import 'package:fixify/view/onboarding/onboarding_motion.dart';
+
+import 'package:fixify/view/onboarding/onboarding%20page/onboarding_motion.dart';
 import 'package:flutter/material.dart';
-import 'constant/navigation.dart';
+
 import 'constant/app_image.dart';
+import 'constant/navigation.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
   @override

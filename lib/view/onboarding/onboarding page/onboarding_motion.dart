@@ -5,6 +5,7 @@ import 'onboard_page1.dart';
 import 'onboard_page2.dart';
 import 'onboard_page3.dart';
 
+
 class OnboardingMotion extends StatefulWidget {
   const OnboardingMotion({super.key});
 

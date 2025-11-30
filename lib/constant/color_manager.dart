@@ -4,6 +4,7 @@ class ColorManager {
   // Primary Colors
   static const Color primary1 = Color(0xFFFFFFFF);
   static const Color primary2 = Color(0xFF006BAA);
+  static const Color primary3 = Color(0xFF00578A);
 
   // Secondary Colors
   static const Color secondary1 = Color(0xFF578A00);

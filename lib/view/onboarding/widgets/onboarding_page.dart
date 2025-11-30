@@ -1,26 +1,15 @@
-import 'package:fixify/constant/navigation.dart';
-import 'package:fixify/view/onboarding/boarding_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../constant/color_manager.dart';
 import '../../../constant/text_manager.dart';
 import 'motion_image.dart';
 import 'onboarding_data.dart';
 
 class OnboardingPage extends StatelessWidget {
-  final double page;
-  final int index;
   final OnboardingData data;
-  final VoidCallback? onNext;
-  final VoidCallback? onBack;
-  const OnboardingPage({
-    super.key,
-    required this.page,
-    required this.index,
-    required this.data,
-    required this.onNext,
-    required this.onBack,
-  });
+
+  const OnboardingPage({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -35,25 +24,20 @@ class OnboardingPage extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {
-                    navigateAndRemoveUntil(
-                      context: context,
-                      screen: BoardingLocation(),
-                    );
+                    if (data.onNext != null) {
+                      data.onNext!();
+                    }
                   },
                   child: Row(
                     children: [
                       Text(
                         "Skip",
                         style: TextManager.buttonText.copyWith(
-                          color: Colors.black,
-                        ),
+                            color: Colors.black),
                       ),
                       SizedBox(width: 4.w),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 17.sp,
-                        color: Colors.black,
-                      ),
+                      Icon(Icons.arrow_forward_ios, size: 17.sp,
+                          color: Colors.black),
                     ],
                   ),
                 ),
@@ -65,8 +49,8 @@ class OnboardingPage extends StatelessWidget {
 
           MotionImage(
             image: data.image,
-            page: page,
-            index: index,
+            page: data.page,
+            index: data.index,
             width: 250.w,
             height: 260.h,
           ),
@@ -82,7 +66,7 @@ class OnboardingPage extends StatelessWidget {
                 height: 5.h,
                 width: 80.w,
                 decoration: BoxDecoration(
-                  color: i == page.round()
+                  color: i == data.page.round()
                       ? ColorManager.secondary2
                       : const Color(0XFFDBDFE1),
                   borderRadius: BorderRadius.circular(5),
@@ -93,47 +77,35 @@ class OnboardingPage extends StatelessWidget {
 
           SizedBox(height: 24.h),
 
-          Text(
-            data.title,
-            style: TextManager.heading1,
-          ),
+          Text(data.title, style: TextManager.heading1),
 
           SizedBox(height: 24.h),
 
-          Text(
-            data.subtitle,
-            textAlign: TextAlign.center,
-            style: TextManager.bodyText,
-          ),
+          Text(data.subtitle, textAlign: TextAlign.center,
+              style: TextManager.bodyText),
 
           SizedBox(height: 45.h),
 
           Column(
             children: [
               ElevatedButton(
-                onPressed: onNext,
+                onPressed: data.onNext,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorManager.primary2,
                   fixedSize: Size(342.w, 48.h),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                      borderRadius: BorderRadius.circular(10)),
                 ),
-                child: Text(
-                  data.nextLabel,
-                  style: TextManager.buttonText,
-                ),
+                child: Text(data.nextLabel, style: TextManager.buttonText),
               ),
 
               SizedBox(height: 14.h),
 
               TextButton(
-                onPressed: onBack,
+                onPressed: data.onBack,
                 child: Text(
-    data.backLabel ,
-                  style: TextManager.heading2.copyWith(
-                    color: data.backColor,
-                  ),
+                  data.backLabel,
+                  style: TextManager.heading2.copyWith(color: data.backColor),
                 ),
               ),
             ],
