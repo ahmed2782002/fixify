@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             HomeHeader(),
             SizedBox(height: 20.h),
-
+//offer
             Stack(
               alignment: Alignment.centerRight,
               children: [
