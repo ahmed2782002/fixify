@@ -3,6 +3,7 @@ import 'package:fixify/constant/color_manager.dart';
 import 'package:fixify/view/onboarding/widgets/onboarding_data.dart';
 import 'package:fixify/view/onboarding/widgets/onboarding_page.dart';
 import 'package:flutter/material.dart';
+
 class OnboardingPageOne extends StatelessWidget {
   final double page;
   final int index;
@@ -17,23 +18,22 @@ class OnboardingPageOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OnboardingPage(
-      page: page,
+    final onboardingData = OnboardingData(
       index: index,
-      data: OnboardingData(
-        image: AppImage.onboarding1,
-        title: "Find Trusted Experts",
-        subtitle: "Finding the Most Experienced and\nTrusted People to Help You",
-        nextLabel: "Next",
-        backLabel: "Back",
-        backColor: ColorManager.textThird,
-      ),
-
+      page: page,
+      image: AppImage.onboarding1,
+      title: "Find Trusted Experts",
+      subtitle: "Finding the Most Experienced and\nTrusted People to Help You",
+      nextLabel: "Next",
+      backLabel: "Back",
+      backColor: ColorManager.textThird,
       onNext: () => controller.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       ),
       onBack: null,
     );
+
+    return OnboardingPage(data: onboardingData);
   }
 }

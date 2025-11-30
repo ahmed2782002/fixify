@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'color_manager.dart';
 
 class TextManager {
@@ -15,7 +16,11 @@ class TextManager {
     fontWeight: FontWeight.w400,
 
   );
-
+  static TextStyle text = GoogleFonts.inter(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: ColorManager.textPrimary,
+  );
   static TextStyle bodyText = GoogleFonts.inter(
     fontSize: 17.sp,
     fontWeight: FontWeight.w600,

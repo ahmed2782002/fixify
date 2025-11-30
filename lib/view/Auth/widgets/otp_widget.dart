@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../constant/color_manager.dart';
 import '../../../constant/text_manager.dart';
 
@@ -91,10 +92,8 @@ class _OtpWidgetState extends State<OtpWidget> {
                     otpFocusNodes[index - 1].requestFocus();
                   }
 
-                  // إرسال حالة الاكتمال
                   widget.onOtpChanged?.call(isOtpComplete());
 
-                  // تحقق من اكتمال الكود
                   String code = otpControllers.map((c) => c.text).join();
                   if (code.length == otpLength && widget.onCompleted != null) {
                     widget.onCompleted!(code);
