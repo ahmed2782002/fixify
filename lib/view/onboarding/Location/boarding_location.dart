@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geolocator/geolocator.dart';
 
-import '../../constant/app_image.dart';
-import '../../constant/color_manager.dart';
-import '../../constant/navigation.dart';
-import '../../constant/text_manager.dart';
-import '../Auth/login.dart';
+import '../../../constant/app_image.dart';
+import '../../../constant/color_manager.dart';
+import '../../../constant/navigation.dart';
+import '../../../constant/text_manager.dart';
+import '../../Auth/login.dart';
 
 class BoardingLocation extends StatelessWidget {
   const BoardingLocation({super.key});
 
   Future<void> getLocation(BuildContext context) async {
     final stopwatch = Stopwatch()..start();
-    print("Start getting location...");
+    // print("Start getting location...");
 
-    // عرض Loading Dialog بشكل أفضل
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -29,7 +28,7 @@ class BoardingLocation extends StatelessWidget {
               padding: EdgeInsets.all(24.sp),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(16.sp),
+                borderRadius: BorderRadius.circular(16.r),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -135,9 +134,9 @@ class BoardingLocation extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: ColorManager.primary2, width: 1.5.w),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.sp),
+                borderRadius: BorderRadius.circular(12.r),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 90.w, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 90.w, vertical: 16.h),
             ),
             child: Text(
               "Allow location access",
