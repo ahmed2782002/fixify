@@ -4,28 +4,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constant/color_manager.dart';
 import '../../../constant/text_manager.dart';
+import 'auth_header.dart';
 import 'data_auth.dart';
+import 'login_form_field.dart';
 
 class AuthWidgets extends StatefulWidget {
   final AuthData data;
   final VoidCallback? onNext;
-  final bool showBackButton;
-  final VoidCallback? onBack;
-  final String type; // "login" أو "otp"
+  final AuthHeader authHeader;
 
+  final String type;
   const AuthWidgets({
     super.key,
     required this.data,
     required this.onNext,
-    this.showBackButton = false,
-    this.onBack,
+    required this.authHeader,
+
     this.type = "login",
   });
-
   @override
   State<AuthWidgets> createState() => _AuthWidgetsState();
 }
-
 class _AuthWidgetsState extends State<AuthWidgets> {
   TextEditingController? loginController;
   final formKey = GlobalKey<FormState>();
@@ -38,7 +37,6 @@ class _AuthWidgetsState extends State<AuthWidgets> {
       loginController = TextEditingController();
     }
   }
-
   @override
   void dispose() {
     loginController?.dispose();
@@ -53,50 +51,13 @@ class _AuthWidgetsState extends State<AuthWidgets> {
         key: formKey,
         child: Column(
           children: [
-            Row(
-              children: [
-                if (widget.showBackButton)
-                  InkWell(
-                    onTap: widget.onBack,
-                    child: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.black,
-                    ),
-                  ),
-                Expanded(
-                  child: Center(
-                    child: Image.asset(
-                      widget.data.image,
-                      width: 186.w,
-                      height: 38.h,
-                    ),
-                  ),
-                ),
-                if (widget.showBackButton) const SizedBox(width: 25),
-              ],
-            ),
-
-            SizedBox(height: 46.h),
-            //title
-            Text(
-              widget.data.title,
-              style: TextManager.heading1.copyWith(fontSize: 24.sp),
-            ),
-
-            SizedBox(height: 16.h),
-
-            //subtitle
-            Text(
-              widget.data.subtitle,
-              style: TextManager.heading2.copyWith(
-                color: const Color(0XFF545E64),
-                fontSize: 14.sp,
-              ),
-              textAlign: TextAlign.center,
+            AuthHeader(
+              data: widget.data,
+              showBackButton: widget.authHeader.showBackButton,
+              onBack: widget.authHeader.onBack,
             ),
 
             SizedBox(height: 30.h),
-
             if (widget.type == "otp")
               Align(
                 alignment: Alignment.center,
@@ -105,7 +66,7 @@ class _AuthWidgetsState extends State<AuthWidgets> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: '+1-(954) 673-5555 ',
+                        text: widget.data.fieldLabel,
                         style: TextManager.heading2.copyWith(
                           fontWeight: FontWeight.w200,
                           fontSize: 14.sp,
@@ -113,7 +74,7 @@ class _AuthWidgetsState extends State<AuthWidgets> {
                         ),
                       ),
                       TextSpan(
-                        text: 'Edit',
+                        text: '   Edit',
                         style: TextManager.heading2.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 14.sp,
@@ -130,7 +91,7 @@ class _AuthWidgetsState extends State<AuthWidgets> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "Enter your Phone or Email",
+                    widget.data.fieldLabel,
                     style: TextManager.heading2.copyWith(
                       fontWeight: FontWeight.w400,
                       fontSize: 14.sp,
@@ -139,10 +100,7 @@ class _AuthWidgetsState extends State<AuthWidgets> {
                   ),
                 ),
               ),
-
             SizedBox(height: 8.h),
-
-            // OTP or Login Field
             if (widget.type == "otp")
               Column(
                 children: [
@@ -157,7 +115,7 @@ class _AuthWidgetsState extends State<AuthWidgets> {
                         widget.onNext?.call();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text("Invalid OTP code"),
                             backgroundColor: Colors.red,
                           ),
@@ -191,49 +149,8 @@ class _AuthWidgetsState extends State<AuthWidgets> {
                 ],
               )
             else
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextFormField(
-                  controller: loginController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: "example@gmail.com",
-                    hintStyle: TextStyle(
-                      color: ColorManager.textPrimary,
-                      fontSize: 16,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFFDBDFE1),
-                        width: 1.5,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFFDBDFE1),
-                        width: 2,
-                      ),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Email is required';
-                    }
-                    final emailRegex = RegExp(
-                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                    );
-                    if (!emailRegex.hasMatch(value)) {
-                      return 'Enter a valid email';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-
+              LoginFormField(controller: loginController!),
             SizedBox(height: 60.h),
-
             ElevatedButton(
               onPressed: () {
                 if (widget.type != "otp") {

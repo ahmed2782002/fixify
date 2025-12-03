@@ -1,7 +1,8 @@
 import 'package:fixify/splash_screen.dart';
+import 'package:fixify/view%20model/cubit_setting.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +19,16 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: const SplashScreen(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => SettingCubit(),
+            ),
+          ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: SplashScreen(),
+          ),
         );
       },
     );

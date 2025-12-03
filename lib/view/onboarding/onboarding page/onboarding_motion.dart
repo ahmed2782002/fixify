@@ -1,10 +1,11 @@
 import 'package:fixify/constant/app_image.dart';
 import 'package:flutter/material.dart';
 
-import 'onboard_page1.dart';
-import 'onboard_page2.dart';
-import 'onboard_page3.dart';
-
+import '../../../core/navigation.dart';
+import '../Location/boarding_location.dart';
+import '../widgets/onboarding_data.dart';
+import '../widgets/onboarding_page.dart';
+import 'onboarding_items.dart';
 
 class OnboardingMotion extends StatefulWidget {
   const OnboardingMotion({super.key});
@@ -27,26 +28,58 @@ class _OnboardingMotionState extends State<OnboardingMotion> {
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      OnboardingPageOne(page: page, index: 0, controller: controller),
-      OnboardingPageTwo(page: page, index: 1, controller: controller),
-      OnboardingPageThree(page: page, index: 2, controller: controller),
-    ];
     return Scaffold(
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              AppImage.onboardingImage,
-              fit: BoxFit.cover,
+            child: Image.asset(AppImage.onboardingImage, fit: BoxFit.cover),
+          ),
+
+          SafeArea(
+            child: PageView.builder(
+              controller: controller,
+              itemCount: onboardingItems.length,
+              itemBuilder: (context, index) {
+                final item = onboardingItems[index];
+                return OnboardingPage(
+                  data: OnboardingData(
+                    index: index,
+                    page: page,
+                    image: item.image,
+                    title: item.title,
+                    subtitle: item.subtitle,
+                    nextLabel: item.nextLabel,
+                    backLabel: item.backLabel,
+                    backColor: item.backColor,
+
+                    onNext: () {
+                      if (index == onboardingItems.length - 1) {
+                        // آخر صفحة
+                        navigateAndRemoveUntil(
+                          context: context,
+                          screen: BoardingLocation(),
+                        );
+                      } else {
+                        controller.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                        );
+                      }
+                    },
+
+                    onBack: index == 0
+                        ? null
+                        : () {
+                            controller.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                          },
+                  ),
+                );
+              },
             ),
           ),
-          SafeArea(
-            child: PageView(
-              controller: controller,
-              children: pages,
-            ),
-          )
         ],
       ),
     );

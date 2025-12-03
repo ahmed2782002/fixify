@@ -5,17 +5,15 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../../constant/app_image.dart';
 import '../../../constant/color_manager.dart';
-import '../../../constant/navigation.dart';
 import '../../../constant/text_manager.dart';
+import '../../../core/navigation.dart';
 import '../../Auth/login.dart';
 
 class BoardingLocation extends StatelessWidget {
   const BoardingLocation({super.key});
 
   Future<void> getLocation(BuildContext context) async {
-    final stopwatch = Stopwatch()..start();
-    // print("Start getting location...");
-
+    // عرض Loading indicator
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -23,7 +21,7 @@ class BoardingLocation extends StatelessWidget {
         onWillPop: () async => false,
         child: Center(
           child: Padding(
-            padding:  EdgeInsets.all(20.0.sp),
+            padding: EdgeInsets.all(20.0.sp),
             child: Container(
               padding: EdgeInsets.all(24.sp),
               decoration: BoxDecoration(
@@ -32,13 +30,16 @@ class BoardingLocation extends StatelessWidget {
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children:  [
+                children: [
                   SpinKitFadingCircle(
                     color: ColorManager.primary2,
                     size: 50.0.sp,
                   ),
-                  SizedBox(height: 16),
-
+                  SizedBox(height: 16.h),
+                  Text(
+                    "Getting your location...",
+                    style: TextManager.bodyText,
+                  ),
                 ],
               ),
             ),
@@ -48,60 +49,48 @@ class BoardingLocation extends StatelessWidget {
     );
 
     try {
-      print("Checking if location service is enabled...");
+      // التحقق من خدمة الموقع
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      print("Service enabled: $serviceEnabled");
       if (!serviceEnabled) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Please enable your location services")),
-        );
+        Navigator.pop(context); // إزالة الـ Loading
+        await Geolocator.openLocationSettings(); // فتح إعدادات الموقع
         return;
       }
 
-      print("Checking location permission...");
+      // التحقق من صلاحيات الموقع
       LocationPermission permission = await Geolocator.checkPermission();
-      print("Current permission: $permission");
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
-        print("Permission after request: $permission");
         if (permission == LocationPermission.denied) {
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Location permissions are denied")),
-          );
           return;
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        print("Permission denied forever");
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
               content: Text(
                   "Location permissions are permanently denied. Please enable them in settings")),
         );
         return;
       }
 
-      print("Getting current location...");
+      // الحصول على الموقع الحالي
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      print("Location obtained: ${position.latitude}, ${position.longitude}");
 
-      Navigator.pop(context);
-      stopwatch.stop();
-      print("Time taken to navigate to Login: ${stopwatch.elapsedMilliseconds} ms");
+      Navigator.pop(context); // إزالة الـ Loading
 
-      // الانتقال للـLogin مباشرة
-      navigateTo(context: context, screen: Login());
+      // الانتقال مباشرة للـ Login
+      navigateTo(context: context, screen: const Login());
     } catch (e) {
-      Navigator.pop(context); // إزالة الـLoading
-      print("Error getting location: $e");
+      Navigator.pop(context); // إزالة الـ Loading
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to get location")),
+        const SnackBar(content: Text("Failed to get location")),
       );
+      print("Error getting location: $e");
     }
   }
 
@@ -147,7 +136,7 @@ class BoardingLocation extends StatelessWidget {
           SizedBox(height: 28.h),
           TextButton(
             onPressed: () {
-              navigateTo(context: context, screen: Login());
+              navigateTo(context: context, screen: const Login());
             },
             child: Text(
               "Enter location manually",
