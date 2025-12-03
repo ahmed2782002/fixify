@@ -54,7 +54,6 @@ class _OnboardingMotionState extends State<OnboardingMotion> {
 
                     onNext: () {
                       if (index == onboardingItems.length - 1) {
-                        // آخر صفحة
                         navigateAndRemoveUntil(
                           context: context,
                           screen: BoardingLocation(),

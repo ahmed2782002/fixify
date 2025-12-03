@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constant/color_manager.dart';
 import '../../../constant/text_manager.dart';
+import '../../../core/navigation.dart';
+import '../Location/boarding_location.dart';
 import 'motion_image.dart';
 import 'onboarding_data.dart';
 
@@ -24,9 +26,8 @@ class OnboardingPage extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {
-                    if (data.onNext != null) {
-                      data.onNext!();
-                    }
+                    navigateAndReplace(
+                        context: context, screen: BoardingLocation());
                   },
                   child: Row(
                     children: [
